@@ -12,3 +12,11 @@ model User {
     ms_id String @unique
     name  String
 }
+
+model Comp {
+    id          String    @id @default(uuid())
+    comp_date   DateTime
+    description String
+    book_from   DateTime?
+    action      String?
+}
