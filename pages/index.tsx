@@ -1,7 +1,44 @@
+import axios from 'axios'
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import prisma from 'lib/prisma'
+import { User } from '@prisma/client'
 
-export default function Home() {
+const fetchUsers = async () => {
+  return axios.post('/api/master-scoreboard/users', {}, {
+    headers: {
+      authorization: `Bearer ${process.env.NEXT_PUBLIC_API_SECRET}`
+    }
+  })
+    .catch(err => {
+      debugger
+    })
+}
+
+const fetchComps = async () => {
+  return axios.post('/api/master-scoreboard/comps', {}, {
+    headers: {
+      authorization: `Bearer ${process.env.NEXT_PUBLIC_API_SECRET}`
+    }
+  })
+    .catch(err => {
+      debugger
+    })
+}
+
+export default function Home({ users }: { users: User[] }) {
+  const handleFetchUsers = async (e) => {
+    e.preventDefault()
+    const users = await fetchUsers()
+    return users.data
+  }
+
+  const handleFetchComps = async (e) => {
+    e.preventDefault()
+    const comps = await fetchComps()
+    return comps.data
+  }
   return (
     <div>
       <Head>
@@ -10,7 +47,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <select>
+        {users.map(u => {
+          return <option key={u.ms_id} value={u.ms_id}>{u.name}</option>
+        })}
+      </select>
       <main>
+        <form onSubmit={handleFetchUsers}>
+          <button type="submit">Refresh users</button>
+        </form>
+        <form onSubmit={handleFetchComps}>
+          <button type="submit">Get comps</button>
+        </form>
         <h1>
           Welcome to <a className="text-blue-600" href="https://nextjs.org">Next.js!</a>
         </h1>
@@ -63,4 +111,20 @@ export default function Home() {
       </footer>
     </div >
   )
+}
+
+export async function getStaticProps() {
+  const users = await prisma.user.findMany()
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+  // const res = await fetch('https://.../posts')
+  // const posts = await res.json()
+
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      users,
+    },
+  }
 }

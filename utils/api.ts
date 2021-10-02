@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export const verifyApiSecretKey = (request: NextApiRequest) =>
-  request.headers.authorization === `Bearer ${process.env.API_SECRET_KEY}`
+  request.headers.authorization === `Bearer ${process.env.NEXT_PUBLIC_API_SECRET}`
 
 export const buildAuthorisedHandler = async (
   req: NextApiRequest,
