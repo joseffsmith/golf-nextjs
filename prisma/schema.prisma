@@ -15,6 +15,7 @@ model User {
 
 model Comp {
     id          String    @id @default(uuid())
+    unique_id   String    @unique
     comp_date   DateTime
     description String
     book_from   DateTime?
