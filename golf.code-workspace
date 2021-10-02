@@ -1,0 +1,36 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "[javascript]": {
+            "editor.tabSize": 2
+        },
+        "[typescript]": {
+            "editor.tabSize": 2
+        },
+        "[typescriptreact]": {
+            "editor.tabSize": 2
+        },
+        "editor.formatOnSave": true,
+        "editor.renderFinalNewline": false,
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true,
+        "files.trimTrailingWhitespace": true,
+        "html.format.enable": false,
+        "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+        "javascript.format.semicolons": "remove",
+        "python.formatting.provider": "none",
+        "python.linting.flake8Args": [
+            "--extend-ignore=E116,E121,E122,E123,E201,E202,E251,E261,E262,E265,E712,E722,E731,E501,E128,E124,E711"
+        ],
+        "python.linting.flake8Enabled": true,
+        "python.pythonPath": "/opt/venvs/rapidtender/bin/python",
+        "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+        "typescript.format.semicolons": "remove",
+        "typescript.tsdk": "./frontend/node_modules/typescript/lib",
+        "typescript.preferences.quoteStyle": "single"
+    }
+}
