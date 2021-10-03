@@ -12,11 +12,11 @@ const COMP_URL = process.env.COMP_URL
 
 export const saveComps = async () => {
   const api = await auth()
-  console.log('authed')
+  process.stdout.write('authed\n\n')
   const comp_page = await api.get(COMP_URL)
-  console.log('got comp page')
+  process.stdout.write('got comp page\n\n')
   const comps = parseComps(comp_page.data)
-  console.log('got comps')
+  process.stdout.write('got comps\n\n')
   // const comps = parseComps(fs.readFileSync('/home/vagrant/golf-nextjs/debug_pages/comps.html', 'utf-8'))
 
   const to_delete = await prisma.comp.deleteMany({
@@ -27,10 +27,10 @@ export const saveComps = async () => {
     }
   })
   if (to_delete.count) {
-    console.log('deleted: ', to_delete.count)
+    process.stdout.write(`deleted: ${to_delete.count}\n\n`)
   }
 
-  console.log('updating comps')
+  process.stdout.write('updating comps\n\n')
   comps.forEach(async comp => {
     const res = await prisma.comp.findMany({
       where: {
@@ -38,7 +38,7 @@ export const saveComps = async () => {
       }
     })
     if (res[0] && !res[0].action && comp.action) {
-      console.log('updating action')
+      process.stdout.write('updating action\n\n')
       await prisma.comp.update({
         where: {
           unique_id: comp.unique_id
@@ -50,7 +50,7 @@ export const saveComps = async () => {
     }
   })
 
-  console.log('creating comps')
+  process.stdout.write('creating comps\n\n')
   const created = await prisma.comp.createMany({
     data: comps,
     skipDuplicates: true

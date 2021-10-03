@@ -15,7 +15,7 @@ const PASSWORD = process.env.MS_PASSWORD
 
 
 export const auth = async (username: string = USERNAME, password: string = PASSWORD): Promise<AxiosInstance> => {
-  console.log('creating instance')
+  process.stdout.write('creating instance\n\n')
   const instance = wrapper(axios.create({
     jar: new CookieJar(),
     headers: {
@@ -24,7 +24,7 @@ export const auth = async (username: string = USERNAME, password: string = PASSW
     }
   }))
 
-  console.log('getting login page')
+  process.stdout.write('getting login page\n\n')
   const login = await instance.get(BASE_URL)
 
   const param = getLoginParam(login.data)
@@ -34,11 +34,11 @@ export const auth = async (username: string = USERNAME, password: string = PASSW
   payload.append('ms_uniqueid', username);
   payload.append('Params', param)
 
-  console.log('authenticating')
+  process.stdout.write('authenticating\n\n')
   const resp: AxiosResponse = await instance.post(BASE_URL, payload)
 
   checkLogin(resp.data, resp.headers)
-  console.log('checked login')
+  process.stdout.write('checked login\n\n')
   return instance
 }
 
