@@ -3,7 +3,7 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import prisma from 'lib/prisma'
-import { User } from '@prisma/client'
+// import { User } from '@prisma/client'
 
 const fetchUsers = async () => {
   return axios.post('/api/master-scoreboard/users', {}, {
@@ -27,7 +27,7 @@ const fetchComps = async () => {
     })
 }
 
-export default function Home({ users }: { users: User[] }) {
+export default function Home({ users }: { users: any[] }) {
   const handleFetchUsers = async (e) => {
     e.preventDefault()
     const users = await fetchUsers()
