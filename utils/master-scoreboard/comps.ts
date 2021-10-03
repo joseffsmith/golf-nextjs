@@ -4,7 +4,7 @@ import { zonedTimeToUtc } from 'date-fns-tz'
 import dotenv from 'dotenv'
 import fs from 'fs'
 import { auth } from './auth'
-import prisma from 'lib/prisma'
+import { prisma } from 'lib/prisma'
 
 dotenv.config()
 

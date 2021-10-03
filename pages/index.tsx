@@ -2,7 +2,7 @@ import axios from 'axios'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import prisma from 'lib/prisma'
+import { prisma } from 'lib/prisma'
 // import { User } from '@prisma/client'
 
 const fetchUsers = async () => {
