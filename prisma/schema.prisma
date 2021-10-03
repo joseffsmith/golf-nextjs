@@ -14,10 +14,22 @@ model User {
 }
 
 model Comp {
-    id          String    @id @default(uuid())
-    unique_id   String    @unique
+    id          String        @id @default(uuid())
+    unique_id   String        @unique
     comp_date   DateTime
     description String
     book_from   DateTime?
     action      String?
+    CompBooking CompBooking[]
+}
+
+model CompBooking {
+    id           String  @id @default(uuid())
+    comp_id      String
+    comp         Comp    @relation(fields: [comp_id], references: [unique_id])
+    is_booked    Boolean
+    player_ids   Int[]
+    booking_time String
+    username     String
+    password     String
 }

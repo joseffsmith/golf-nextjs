@@ -4,21 +4,62 @@ import { zonedTimeToUtc } from 'date-fns-tz'
 import dotenv from 'dotenv'
 import fs from 'fs'
 import { auth } from './auth'
+import prisma from 'lib/prisma'
 
 dotenv.config()
 
 const COMP_URL = process.env.COMP_URL
 
-export const getComps = async () => {
+export const saveComps = async () => {
   const api = await auth()
+  console.log('authed')
   const comp_page = await api.get(COMP_URL)
+  console.log('got comp page')
   const comps = parseComps(comp_page.data)
+  console.log('got comps')
   // const comps = parseComps(fs.readFileSync('/home/vagrant/golf-nextjs/debug_pages/comps.html', 'utf-8'))
-  console.log(comps)
+
+  const to_delete = await prisma.comp.deleteMany({
+    where: {
+      comp_date: {
+        lt: new Date()
+      }
+    }
+  })
+  if (to_delete.count) {
+    console.log('deleted: ', to_delete.count)
+  }
+
+  console.log('updating comps')
+  comps.forEach(async comp => {
+    const res = await prisma.comp.findMany({
+      where: {
+        unique_id: comp.unique_id
+      }
+    })
+    if (res[0] && !res[0].action && comp.action) {
+      console.log('updating action')
+      await prisma.comp.update({
+        where: {
+          unique_id: comp.unique_id
+        },
+        data: {
+          action: comp.action
+        }
+      })
+    }
+  })
+
+  console.log('creating comps')
+  const created = await prisma.comp.createMany({
+    data: comps,
+    skipDuplicates: true
+  })
+
   return comps
 }
 
-const parseComps = (content: string): {comp_date: Date, description: string, book_from: Date | null, action: string | null}[] => {
+const parseComps = (content: string): {unique_id: string, comp_date: Date, description: string, book_from: Date | null, action: string | null}[] => {
   fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/comps.html', content, err => console.error(err))
 
   const $ = cheerio.load(content)
@@ -42,6 +83,6 @@ const parseComps = (content: string): {comp_date: Date, description: string, boo
 
     const action = $(row).find('form').attr('action') ?? null
 
-    return {comp_date: parsed_date, description: raw_description, book_from, action}
+    return {unique_id: `${parsed_date.toString()}-${raw_description}`, comp_date: parsed_date, description: raw_description, book_from, action}
   })
 }

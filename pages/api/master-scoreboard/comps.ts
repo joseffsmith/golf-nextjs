@@ -1,15 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { buildAuthorisedHandler } from 'utils/api'
-import { getComps } from 'utils/master-scoreboard/comps'
-import prisma from 'lib/prisma'
+import { saveComps } from 'utils/master-scoreboard/comps'
 
 const authorisedHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const comps = await getComps()
-
-  await prisma.comp.createMany({
-    data: comps,
-    skipDuplicates: true,
-  })
+  const comps = await saveComps()
 
   res.status(200).json(comps)
 }

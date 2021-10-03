@@ -12,7 +12,7 @@ const fetchUsers = async () => {
     }
   })
     .catch(err => {
-      debugger
+      throw (err)
     })
 }
 
@@ -23,7 +23,7 @@ const fetchComps = async () => {
     }
   })
     .catch(err => {
-      debugger
+      throw (err)
     })
 }
 
