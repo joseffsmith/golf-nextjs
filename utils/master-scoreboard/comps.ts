@@ -60,7 +60,7 @@ export const saveComps = async () => {
 }
 
 const parseComps = (content: string): {unique_id: string, comp_date: Date, description: string, book_from: Date | null, action: string | null}[] => {
-  fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/comps.html', content, err => console.error(err))
+  // fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/comps.html', content, err => console.error(err))
 
   const $ = cheerio.load(content)
 

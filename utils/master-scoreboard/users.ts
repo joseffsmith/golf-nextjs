@@ -24,11 +24,11 @@ export const getAllUsers = async (): Promise<{ms_id: string, name: string}[]> =>
   const base_url = process.env.BASE_URL
   const resp = await axios.get(base_url)
 
-  fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/users.html', resp.data, err => console.error(err))
+  // fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/users.html', resp.data, err => console.error(err))
   return getUsers(resp.data)
 }
 
-export const getAllUsersLocal = async () => {
-  const data = fs.readFileSync('/home/vagrant/golf-nextjs/debug_pages/users.html', 'utf8')
-  return getUsers(data)
-}
+// export const getAllUsersLocal = async () => {
+//   const data = fs.readFileSync('/home/vagrant/golf-nextjs/debug_pages/users.html', 'utf8')
+//   return getUsers(data)
+// }

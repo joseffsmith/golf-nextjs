@@ -41,7 +41,7 @@ export const auth = async (username: string = USERNAME, password: string = PASSW
 const getLoginParam = (content: string) => {
   const $ = cheerio.load(content)
 
-  fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/login.html', content, err => console.error(err))
+  // fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/login.html', content, err => console.error(err))
 
   return $('[name=Params]').attr('value')
 }
@@ -50,8 +50,8 @@ const checkLogin = (content: string, headers: AxiosResponse['headers']) => {
   const $ = cheerio.load(content)
   const a = $('h1:contains("Restricted Access")')
   if (a.length) {
-    fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/login_failed.json', JSON.stringify({data: content, headers: headers}), err => console.error(err))
+    // fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/login_failed.json', JSON.stringify({data: content, headers: headers}), err => console.error(err))
     throw Error("Login failed")
   }
-  fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/login_success.json', JSON.stringify({data: content, headers: headers}), err => console.error(err))
+  // fs.writeFile('/home/vagrant/golf-nextjs/debug_pages/login_success.json', JSON.stringify({data: content, headers: headers}), err => console.error(err))
 }
